@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AttendEase | Student Attendance</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <!-- Login Page Layout -->
+    <div id="loginPage" class="login-layout">
+      <section class="login-card">
+        <div class="logo">SA</div>
+        <p class="eyebrow">SMART CAMPUS</p>
+        <h1>Attendance made simple.</h1>
+        <p class="muted">Sign in to manage student records and daily attendance.</p>
+        
+        <form id="loginForm">
+          <label>Username</label>
+          <input id="username" required autocomplete="username">
+          
+          <label>Password</label>
+          <input id="password" type="password" required autocomplete="current-password">
+          
+          <button class="primary full">Sign in →</button>
+          <p id="loginMessage" class="message"></p>
+        </form>
+        
+        <p class="hint">First login: <b>admin</b> / <b>Admin@123</b></p>
+      </section>
+      
+      <aside class="login-art">
+        <span class="pill">ATTENDANCE OVERVIEW</span>
+        <h2>Better records.<br>Better decisions.</h2>
+        <p>One simple place for student records, attendance and reports.</p>
+        <div class="art-stats">
+          <span>01 · Add students</span>
+          <span>02 · Mark attendance</span>
+          <span>03 · View reports</span>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Main App Layout -->
+    <div id="appPage" class="app-layout hidden">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="logo small">SA</div>
+          <div>
+            <b>AttendEase</b>
+            <small>STUDENT PORTAL</small>
+          </div>
+        </div>
+        
+        <p class="nav-label">WORKSPACE</p>
+        <button class="nav-item active" data-page="dashboard">▦ Dashboard</button>
+        <button class="nav-item" data-page="students">♙ Students</button>
+        <button class="nav-item" data-page="mark">✓ Mark attendance</button>
+        <button class="nav-item" data-page="reports">▤ Reports & exports</button>
+        
+        <div class="sidebar-bottom">
+          <button class="nav-item" data-page="settings">⚙ Change password</button>
+          <button id="logoutButton" class="nav-item">↪ Log out</button>
+          <p class="profile">Signed in as <b id="adminName">admin</b></p>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">STUDENT MANAGEMENT</p>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+          <span id="todayLabel" class="top-date"></span>
+        </header>
+        
+        <p id="globalMessage" class="message"></p>
+
+        <!-- Dashboard Page -->
+        <section id="dashboardPage" class="page">
+          <div class="welcome">
+            <div>
+              <span class="pill light">YOUR DAILY OVERVIEW</span>
+              <h2>Good work starts with good records.</h2>
+              <p>Manage students and keep attendance up to date.</p>
+            </div>
+          </div>
+          
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span>Total students</span>
+              <h2 id="totalStudents">0</h2>
+            </article>
+            <article class="stat-card">
+              <span>Attendance entries</span>
+              <h2 id="totalEntries">0</h2>
+            </article>
+            <article class="stat-card">
+              <span>Present entries</span>
+              <h2 id="presentEntries">0</h2>
+            </article>
+            <article class="stat-card">
+              <span>Absent entries</span>
+              <h2 id="absentEntries">0</h2>
+            </article>
+          </div>
+          
+          <div class="section-heading">
+            <div>
+              <h2>Quick actions</h2>
+              <p>Jump straight to a task.</p>
+            </div>
+          </div>
+          
+          <div class="quick-grid">
+            <button class="quick-card" data-go="students">
+              <b>＋ Add a student</b>
+              <small>Register a new student</small>
+            </button>
+            <button class="quick-card" data-go="mark">
+              <b>✓ Mark attendance</b>
+              <small>Record daily status</small>
+            </button>
+            <button class="quick-card" data-go="reports">
+              <b>▤ View reports</b>
+              <small>Check percentage and history</small>
+            </button>
+          </div>
+          
+          <div class="section-heading">
+            <h2>Recent attendance</h2>
+          </div>
+          
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recentRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Students Directory Page -->
+        <section id="studentsPage" class="page hidden">
+          <div class="section-heading">
+            <div>
+              <h2>Student directory</h2>
+              <p>Add, search and manage student details.</p>
+            </div>
+          </div>
+          
+          <div class="content-grid">
+            <div class="panel">
+              <h3>Add a student</h3>
+              <form id="studentForm" class="form-grid">
+                <div>
+                  <label>Student ID *</label>
+                  <input id="studentId" required maxlength="40" placeholder="ST101">
+                </div>
+                <div>
+                  <label>Full name *</label>
+                  <input id="studentName" required maxlength="100">
+                </div>
+                <div>
+                  <label>Department *</label>
+                  <input id="department" required maxlength="100">
+                </div>
+                <div>
+                  <label>Academic year *</label>
+                  <select id="year">
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option>3rd Year</option>
+                    <option>4th Year</option>
+                  </select>
+                </div>
+                <div class="wide">
+                  <label>Email (optional)</label>
+                  <input id="email" type="email" maxlength="150">
+                </div>
+                <button class="primary wide">Add student ＋</button>
+                <p id="studentMessage" class="message wide"></p>
+              </form>
+            </div>
+            
+            <div class="panel">
+              <h3>Keep records tidy</h3>
+              <p class="muted">Use a unique student ID for every student. Deleting a student also deletes their attendance history.</p>
+            </div>
+          </div>
+          
+          <div class="section-heading">
+            <h2>All students <span id="studentCount" class="count-badge">0</span></h2>
+            <input id="studentSearch" class="search-input" placeholder="Search students...">
+          </div>
+          
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="studentRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mark Attendance Page -->
+        <section id="markPage" class="page hidden">
+          <div class="section-heading">
+            <div>
+              <h2>Daily attendance</h2>
+              <p>Choose a date and set each student's status.</p>
+            </div>
+          </div>
+          
+          <div class="panel">
+            <div class="filter-panel">
+              <div>
+                <label>Attendance date</label>
+                <input type="date" id="attendanceDate">
+              </div>
+              <span class="badge present">Present: <b id="markedPresent">0</b></span>
+              <span class="badge absent">Absent: <b id="markedAbsent">0</b></span>
+            </div>
+            
+            <div id="attendanceList" class="attendance-list"></div>
+            
+            <button id="saveAttendance" class="primary">Save attendance ✓</button>
+            <p id="attendanceMessage" class="message"></p>
+          </div>
+        </section>
+
+        <!-- Reports & Exports Page -->
+        <section id="reportsPage" class="page hidden">
+          <div class="section-heading">
+            <div>
+              <h2>Reports & exports</h2>
+              <p>Review attendance for any date range.</p>
+            </div>
+          </div>
+          
+          <div class="panel filter-panel">
+            <div>
+              <label>From date</label>
+              <input id="reportStart" type="date">
+            </div>
+            <div>
+              <label>To date</label>
+              <input id="reportEnd" type="date">
+            </div>
+            <button id="applyFilters" class="primary">Apply filters</button>
+          </div>
+          
+          <div class="stats-grid report-stats">
+            <article class="stat-card">
+              Classes recorded
+              <h2 id="reportEntries">0</h2>
+            </article>
+            <article class="stat-card">
+              Present
+              <h2 id="reportPresent">0</h2>
+            </article>
+            <article class="stat-card">
+              Absent
+              <h2 id="reportAbsent">0</h2>
+            </article>
+          </div>
+          
+          <div class="section-heading">
+            <h2>Attendance summary</h2>
+            <button id="summaryCsv" class="secondary">Export summary CSV ↓</button>
+          </div>
+          
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Total</th>
+                    <th>Attendance</th>
+                  </tr>
+                </thead>
+                <tbody id="summaryRows"></tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="section-heading">
+            <h2>Detailed attendance</h2>
+            <div class="button-row">
+              <button id="detailCsv" class="secondary">Export CSV ↓</button>
+              <button id="detailExcel" class="secondary">Excel-compatible CSV ↓</button>
+            </div>
+          </div>
+          
+          <div class="table-card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="detailRows"></tbody>
+              </table>
+            </div>
+          </div>
+          
+          <p class="hint">CSV files open in Microsoft Excel without extra libraries.</p>
+        </section>
+
+        <!-- Settings Page -->
+        <section id="settingsPage" class="page hidden">
+          <div class="panel settings-panel">
+            <h2>Change administrator password</h2>
+            <p class="muted">Use at least 8 characters.</p>
+            
+            <form id="passwordForm">
+              <label>Current password</label>
+              <input id="currentPassword" type="password" required>
+              
+              <label>New password</label>
+              <input id="newPassword" type="password" minlength="8" required>
+              
+              <label>Confirm new password</label>
+              <input id="confirmPassword" type="password" minlength="8" required>
+              
+              <button class="primary">Update password</button>
+              <p id="passwordMessage" class="message"></p>
+            </form>
+          </div>
+        </section>
+
+        <footer>AttendEase · Student Attendance Management System</footer>
+      </main>
+    </div>
+    
+    <script src="/app.js"></script>
+  </body>
+</html>
