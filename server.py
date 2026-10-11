@@ -148,4 +148,6 @@ if __name__ == '__main__':
     print('Student Attendance System: http://127.0.0.1:8000')
     print(f'Initial login: {USER} / {PASSWORD}')
     print('Press Ctrl+C to stop.')
-    ThreadingHTTPServer(('127.0.0.1',8000),Handler).serve_forever()
+    port = int(os.environ.get("PORT", 8000))
+    print(f"Student Attendance System: port {port}")
+    ThreadingHTTPServer(('0.0.0.0', port), Handler).serve_forever()
